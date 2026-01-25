@@ -1,14 +1,21 @@
+# data artifacts
+data/processed/
+*.duckdb
+*.parquet
+*.csv
+
+# trained models & reports
+models/
+reports/
+*.joblib
+
+# python cache
 __pycache__/
 *.pyc
+
+# notebooks checkpoints
 .ipynb_checkpoints/
-.venv/
-venv/
-.env
 
-data/raw/
-data/processed/
-
-*.pkl
-*.joblib
-*.log
+# OS / editor noise
 .DS_Store
+.vscode/
