@@ -26,25 +26,46 @@ The raw data is ingested from Excel, cleaned, and stored locally in DuckDB for r
 
 Project Structure
 credit-risk-prediction/
+
 │
 ├── sql/
-│   ├── 01_create_v_clients.sql      # Clean & semantic client view
-│   ├── 02_create_v_features.sql     # Feature engineering layer
-│   └── 03_diagnostics.sql           # Data validation & sanity checks
+# Clean & semantic client view
+│   ├── 01_create_v_clients.sql 
+
+# Feature engineering layer
+│   ├── 02_create_v_features.sql 
+
+# Data validation & sanity checks
+│   └── 03_diagnostics.sql           
 │
+
 ├── src/
-│   ├── convert_xls.py               # Excel → Parquet conversion
-│   ├── make_duckdb.py               # DuckDB database creation
-│   ├── data_access.py               # Data loading utilities
-│   └── train_logreg.py              # Reproducible model training script
+
+# Excel → Parquet conversion 
+├── convert_xls.py 
+# DuckDB database creation
+│   ├── make_duckdb.py 
+# Data loading utilities
+│   ├── data_access.py 
+# Reproducible model training script
+│   └── train_logreg.py 
 │
+
 ├── notebooks/
-│   ├── 01_eda_risk_signals.ipynb     # Exploratory analysis
-│   └── model_baselines.ipynb         # Model comparison & threshold analysis
+
+# Exploratory analysis
+│   ├── 01_eda_risk_signals.ipynb 
+# Model comparison & threshold analysis
+│   └── model_baselines.ipynb         
 │
-├── models/        # (ignored) trained models
-├── reports/       # (ignored) metrics & artifacts
+# (ignored) trained models
+├── models/       
+# (ignored) metrics & artifacts
+├── reports/     
+
+
 └── README.md
+
 
 SQL Feature Pipeline
 
