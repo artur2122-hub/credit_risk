@@ -1,3 +1,5 @@
+TL;DR: Built an end-to-end credit risk pipeline (SQL + Python) that prioritizes interpretability and policy-driven threshold selection over raw metric optimization.
+
 Good instinct. The code is solid; the README is now the bottleneck. A strong README turns this from “I did a project” into “I understand decision-making with data”.
 
 Below is a complete, polished README you can adapt directly. It’s written to match what you actually built — no exaggeration, no buzzword soup.
@@ -161,6 +163,8 @@ PR AUC: ~0.51
 Recall (defaulters): ~72%
 
 Precision (defaulters): ~36%
+
+At the selected threshold, the model captures ~72% of defaulters while accepting a higher false-positive rate, reflecting a risk-averse lending strategy.
 
 The model is not perfect — and is not presented as such — but it provides a reasonable and explainable risk ranking suitable for decision support.
 
