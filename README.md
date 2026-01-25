@@ -1,3 +1,185 @@
-Both logistic regression and decision tree models exhibited similar discriminatory power, with comparable ROC AUC and precision–recall behavior. Given this similarity, logistic regression was selected as the primary model due to its superior interpretability and stability, which are critical in credit risk applications.
+Good instinct. The code is solid; the README is now the bottleneck. A strong README turns this from “I did a project” into “I understand decision-making with data”.
 
-The decision threshold was set to 0.4. Compared to the conventional 0.5 threshold, this choice increases recall of defaulters by approximately 9 percentage points, at the cost of a higher false-positive rate. This tradeoff reflects a risk-averse policy, where the cost of missing a defaulter is considered higher than the cost of flagging additional non-defaulters for review. Such an operating point is consistent with conservative credit risk management practices.
+Below is a complete, polished README you can adapt directly. It’s written to match what you actually built — no exaggeration, no buzzword soup.
+
+Credit Risk Prediction — End-to-End Project
+Overview
+
+This project builds an end-to-end credit risk pipeline, from raw data ingestion to feature engineering, exploratory analysis, and interpretable modeling.
+
+The goal is not to maximize a metric at all costs, but to demonstrate reasonable, defensible modeling choices under realistic constraints — similar to how credit risk is handled in practice.
+
+The final model estimates the probability that a client will default on their credit card payment next month and evaluates different decision thresholds based on policy tradeoffs.
+
+Dataset
+
+Source: UCI Machine Learning Repository
+Default of Credit Card Clients Dataset
+
+Size: ~30,000 clients
+
+Target:
+
+default_next_month (1 = default, 0 = no default)
+
+The raw data is ingested from Excel, cleaned, and stored locally in DuckDB for reproducible querying.
+
+Project Structure
+credit-risk-prediction/
+│
+├── sql/
+│   ├── 01_create_v_clients.sql      # Clean & semantic client view
+│   ├── 02_create_v_features.sql     # Feature engineering layer
+│   └── 03_diagnostics.sql           # Data validation & sanity checks
+│
+├── src/
+│   ├── convert_xls.py               # Excel → Parquet conversion
+│   ├── make_duckdb.py               # DuckDB database creation
+│   ├── data_access.py               # Data loading utilities
+│   └── train_logreg.py              # Reproducible model training script
+│
+├── notebooks/
+│   ├── 01_eda_risk_signals.ipynb     # Exploratory analysis
+│   └── model_baselines.ipynb         # Model comparison & threshold analysis
+│
+├── models/        # (ignored) trained models
+├── reports/       # (ignored) metrics & artifacts
+└── README.md
+
+SQL Feature Pipeline
+
+Feature engineering is handled entirely in SQL using DuckDB views, following a layered approach:
+
+raw_default_clients
+Physical table loaded from Parquet.
+
+v_clients
+
+Renames raw columns (X1 → limit_bal, etc.)
+
+Removes the duplicated header row
+
+Defines clean, typed client records
+
+v_features
+
+Encodes recent delinquency (pay_0)
+
+Aggregates delinquency history (e.g. n_months_late_6m)
+
+Computes utilization and payment behavior ratios
+
+Produces a stable, modeling-ready feature table
+
+This separation makes the pipeline:
+
+reproducible
+
+debuggable
+
+easy to extend without breaking downstream code
+
+Exploratory Data Analysis
+
+EDA focuses on risk signals, not just distributions.
+
+Key findings:
+
+Recent delinquency (pay_0) is the strongest single predictor
+
+Persistent delinquency over time is more informative than isolated events
+
+High utilization and low payment ratios are associated with higher default risk
+
+Default risk increases monotonically with late-payment severity
+
+These insights directly informed feature selection and modeling decisions.
+
+Modeling Approach
+
+Two baseline models were evaluated:
+
+Logistic Regression
+
+Decision Tree
+
+Both models achieved similar ranking performance (ROC AUC ≈ 0.74–0.77).
+
+Final Choice: Logistic Regression
+
+Logistic regression was selected because:
+
+Performance was comparable to the decision tree
+
+Coefficients are interpretable and stable
+
+The model aligns better with explainability requirements common in credit risk
+
+Threshold Selection & Policy Tradeoff
+
+Rather than relying on a fixed 0.5 cutoff, the project evaluates decision thresholds explicitly.
+
+Chosen threshold: 0.4
+
+Rationale:
+
+Increases recall of defaulters by ~9 percentage points
+
+Accepts more false positives to reduce missed defaults
+
+Reflects a risk-averse lending policy where defaults are more costly than customer inconvenience
+
+This emphasizes that modeling decisions are policy decisions, not purely technical ones.
+
+Results (Logistic Regression @ threshold = 0.4)
+
+ROC AUC: ~0.74
+
+PR AUC: ~0.51
+
+Recall (defaulters): ~72%
+
+Precision (defaulters): ~36%
+
+The model is not perfect — and is not presented as such — but it provides a reasonable and explainable risk ranking suitable for decision support.
+
+Reproducibility
+
+After setting up the DuckDB database and SQL views, the full training pipeline can be reproduced with:
+
+python src/train_logreg.py
+
+
+This script:
+
+Loads features from v_features
+
+Trains the logistic regression model
+
+Evaluates performance at the chosen threshold
+
+Exports metrics and coefficients (ignored by Git)
+
+Key Takeaways
+
+Feature engineering matters more than model complexity
+
+Threshold choice often matters more than algorithm choice
+
+Interpretability and policy alignment are central in credit risk
+
+SQL + Python separation leads to cleaner, more maintainable pipelines
+
+Possible Extensions
+
+Cost-sensitive optimization using expected loss
+
+Time-based validation split
+
+Monitoring population drift
+
+Comparison with regularized or ensemble models
+
+Final note
+
+This project is intentionally focused on clarity, structure, and reasoning, rather than chasing marginal metric improvements.
