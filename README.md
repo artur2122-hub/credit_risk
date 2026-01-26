@@ -1,9 +1,5 @@
 TL;DR: Built an end-to-end credit risk pipeline (SQL + Python) that prioritizes interpretability and policy-driven threshold selection over raw metric optimization.
 
-Good instinct. The code is solid; the README is now the bottleneck. A strong README turns this from “I did a project” into “I understand decision-making with data”.
-
-Below is a complete, polished README you can adapt directly. It’s written to match what you actually built — no exaggeration, no buzzword soup.
-
 Credit Risk Prediction — End-to-End Project
 Overview
 
